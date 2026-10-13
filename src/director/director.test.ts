@@ -114,7 +114,7 @@ test("commands: General text goes to the Lead, topic text to its agent; commands
 	assert.match(t.tg.answers.at(-1)!.text!, /older version/);
 });
 
-test("onboarding: a new instance shows the checklist once, at the first message; buttons create topics and ask the Lead", async () => {
+test("onboarding: a new instance shows the checklist once, at the first message; buttons create topics and ask the Lead", { skip: needs("web") }, async () => {
 	const t = testDirector();
 	await t.s.commands.dispatch(t.text("hello"));
 	const list = t.tg.said.find((s) => s.text.startsWith("🧭"))!;
@@ -145,7 +145,7 @@ test("onboarding: an instance set up before it never shows it by itself; /start 
 	assert.match(t.tg.last().text, /^🧭 Setting up/);
 });
 
-test("routines: moving one changes only its time, books the new run, and keeps the brief", async () => {
+test("routines: moving one changes only its time, books the new run, and keeps the brief", { skip: needs("web") }, async () => {
 	const t = testDirector(Date.UTC(2026, 9, 12, 5, 30)); // 07:30 local
 	await t.s.routines.save("hf", "research", "15 7 * * *", "A long brief with details");
 	const before = t.s.routines.get(1)!;
