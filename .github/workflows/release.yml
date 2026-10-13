@@ -1,0 +1,26 @@
+# A pushed tag vX.Y.Z: the checks once more, then a GitHub release whose notes are that version's CHANGELOG.md section.
+name: release
+on:
+  push:
+    tags: ["v*.*.*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Notes from CHANGELOG.md
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          awk -v v="$v" '$0 ~ "^## "v"$" {on=1; next} /^## / {on=0} on' CHANGELOG.md > notes.md
+          [ -s notes.md ] || { echo "CHANGELOG.md has no section ## $v"; exit 1; }
+      - run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md
+        env:
+          GH_TOKEN: ${{ github.token }}

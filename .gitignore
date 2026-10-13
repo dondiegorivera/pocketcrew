@@ -1,0 +1,12 @@
+node_modules
+# Every env variant holds credentials; only the example is tracked.
+.env*
+!.env.example
+.wrangler/
+.cloudflare/
+*.sqlite*
+.claude/
+.serena/
+sites/reports/node_modules
+# The export's marker (oss/export.mjs in the maintainer's instance).
+.pocketcrew-export

@@ -1,0 +1,38 @@
+# Every push and pull request: types and tests with every public plugin, then core alone and each plugin on its own,
+# so no core change quietly depends on a plugin. No secrets and no Cloudflare account: nothing here deploys.
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: The generated bundles are committed and current
+        run: git diff --exit-code -- src/plugins.gen.ts src/skills.gen.ts src/roles.gen.ts
+  plugins:
+    needs: check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plugins: [none, google, web, notes, ops, "web,lead-pipeline"]
+    env:
+      POCKETCREW_PLUGINS: ${{ matrix.plugins }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test

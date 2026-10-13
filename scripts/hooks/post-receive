@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# The bare repo's hook (installed by scripts/ci-setup.sh): mirror every push to a `github` remote, best-effort, and on a
+# push to main start the deploy pipeline in the background, using scripts/deploy.sh from the pushed commit, so the
+# pipeline is versioned with the code. A failure never rejects the push. The repo is <gitRoot>/<name>.git.
+bare=$(cd "$(git rev-parse --git-dir)" && pwd)
+name=$(basename "$bare" .git)
+log="$bare/hooks/github-mirror.log"
+if git remote | grep -qx github; then
+	{
+		printf '\n--- %s ---\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+		git push --mirror github || printf 'Mirror push to github failed; continuing because mirroring is best-effort.\n'
+	} >>"$log" 2>&1
+fi
+
+while read -r _old new ref; do
+	[ "$ref" = refs/heads/main ] && [ "$new" != 0000000000000000000000000000000000000000 ] || continue
+	mkdir -p "$HOME/.cache/$name-deploy"
+	script=$(mktemp "/tmp/$name-deploy-XXXXXX")
+	if git show "$new:scripts/deploy.sh" >"$script" 2>/dev/null; then
+		POCKETCREW_BARE=$bare setsid nohup bash "$script" >>"$HOME/.cache/$name-deploy/deploy.log" 2>&1 </dev/null &
+		echo "$name: deploying ${new:0:7} in the background (General says when it is live)"
+	else
+		rm -f "$script"
+	fi
+done
+exit 0

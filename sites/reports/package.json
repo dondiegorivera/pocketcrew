@@ -1,0 +1,10 @@
+{
+  "name": "pocketcrew-reports-site",
+  "private": true,
+  "type": "module",
+  "description": "The reports Worker; dependencies come from the root install.",
+  "devDependencies": {
+    "cf": "^1.0.0-beta.12",
+    "wrangler": "^4.147.0"
+  }
+}

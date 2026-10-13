@@ -1,0 +1,3 @@
+Notes (plugin):
+- notes (Notes): the operator's notes as Markdown files by topic in the notes repo view (repo_files, repo_read, repo_grep, repo_write): ideas, links per topic, trips with expense tables and totals, an inbox for the unsorted, README.md as the index; follows the notes-system skill. The operator edits the same files in Obsidian (git over the tailnet), so the newer edit wins. No web: it stores links without opening them. Never deletes; a moved item leaves a pointer.
+- Its repo view: notes (private, server only); the server applies writes within a minute and the operator's phone pulls them.

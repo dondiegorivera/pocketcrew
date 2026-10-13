@@ -1,0 +1,17 @@
+# A template: @NAME@ is the instance's name (pocketcrew.config.ts), filled in when installed as @NAME@-notes-git.service.
+# Git over HTTP for the operator's notes repo, on localhost only; `tailscale serve --https=8443` puts the tailnet's
+# HTTPS in front of it. scripts/notes-setup.sh installs it; scripts/deploy.sh restarts it after every deploy.
+#   Logs: journalctl --user -u @NAME@-notes-git
+[Unit]
+Description=@NAME@ notes git (smart HTTP, localhost)
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/@NAME@-deploy
+ExecStart=/bin/bash -c 'for d in %h/.local/share/pi-node/node-v2[2-9]*/bin; do [ -x "$$d/node" ] && N="$$d/node"; done; exec "$${N:-node}" scripts/notes-git-server.mjs'
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

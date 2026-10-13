@@ -1,0 +1,37 @@
+{
+  "name": "pocketcrew",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "cf dev",
+    "precheck": "node scripts/bundle-plugins.mjs && node scripts/bundle-skills.mjs && node scripts/bundle-roles.mjs",
+    "check": "cf workers types && tsc --noEmit && node scripts/test.mjs",
+    "pretest": "node scripts/bundle-plugins.mjs && node scripts/bundle-skills.mjs && node scripts/bundle-roles.mjs",
+    "test": "node scripts/test.mjs",
+    "predeploy": "node scripts/bundle-plugins.mjs && node scripts/bundle-skills.mjs && node scripts/bundle-roles.mjs",
+    "deploy": "cf deploy",
+    "setup": "bash scripts/setup.sh",
+    "secrets": "scripts/secrets.sh",
+    "types": "cf workers types",
+    "deploy:site": "cd sites/reports && cf deploy",
+    "google": "scripts/google-secrets.sh",
+    "notes-password": "node plugins/notes/server/notes-password.mjs",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.124.0",
+    "@earendil-works/chord": "^1.0.0",
+    "@earendil-works/pi-ai": "^1.0.0",
+    "@earendil-works/pi-durable": "^1.0.0",
+    "agents": "^0.26.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "cf": "^1.0.0-beta.12",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.147.0"
+  }
+}

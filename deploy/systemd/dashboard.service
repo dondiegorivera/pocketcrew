@@ -1,0 +1,23 @@
+# A template: @NAME@ is the instance's name (pocketcrew.config.ts), filled in when installed as @NAME@-dashboard.service.
+# The @NAME@ dashboard: read-only, on the tailnet, from the deployed clone (~/@NAME@-deploy), so it shows the code
+# that is live. scripts/deploy.sh restarts it after every deploy; scripts/ci-setup.sh installs and enables it.
+#   Logs: journalctl --user -u @NAME@-dashboard
+#   Overrides (POCKETCREW_DASHBOARD_BIND, POCKETCREW_DASHBOARD_PORT): ~/.config/@NAME@/dashboard.env
+[Unit]
+Description=@NAME@ dashboard (read-only, tailnet bind)
+After=default.target
+
+[Service]
+Type=simple
+Environment=POCKETCREW_DASHBOARD_BIND=127.0.0.1
+Environment=POCKETCREW_DASHBOARD_PORT=8341
+EnvironmentFile=-%h/.config/@NAME@/dashboard.env
+WorkingDirectory=%h/@NAME@-deploy
+# Node 22 or newer runs the TypeScript directly; the newest one installed wins.
+ExecStart=/bin/bash -c 'for d in %h/.local/share/pi-node/node-v2[2-9]*/bin; do [ -x "$$d/node" ] && N="$$d/node"; done; exec "$${N:-node}" src/dashboard/server.ts --bind "$POCKETCREW_DASHBOARD_BIND" --port "$POCKETCREW_DASHBOARD_PORT"'
+# The tailnet address may not exist yet at login: the bind check refuses it, so retry.
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
