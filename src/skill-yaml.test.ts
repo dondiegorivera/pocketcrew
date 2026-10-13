@@ -1,8 +1,7 @@
 // SKILL.md front matter is YAML to everyone else (GitHub renders it, other agents' tools read it): a value YAML would
 // misread is written quoted, and reads back the same.
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { globSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import { parseSkill, skillMarkdown, yamlScalar, yamlValue } from "./skill-format.ts";
 
@@ -18,7 +17,10 @@ test("front matter values YAML would misread are quoted, and read back unchanged
 });
 
 test("every SKILL.md in the repo has front matter YAML can read", () => {
-	const files = execFileSync("git", ["ls-files", "*SKILL.md"], { cwd: new URL("..", import.meta.url), encoding: "utf8" }).trim().split("\n");
+	// From disk, not git: the check also runs in a fresh export that has no commits yet.
+	const root = new URL("..", import.meta.url);
+	const files = ["skills", "plugins", "oss/public"].flatMap((dir) => globSync(`${dir}/**/SKILL.md`, { cwd: root, exclude: (p) => p.includes("node_modules") }));
+	assert.ok(files.length > 5);
 	for (const f of files) {
 		const head = /^---\r?\n([\s\S]*?)\r?\n---/.exec(readFileSync(new URL(`../${f}`, import.meta.url), "utf8"))?.[1] ?? "";
 		for (const line of head.split("\n")) {

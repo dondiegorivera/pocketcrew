@@ -6,6 +6,10 @@ commands, and npm run setup.
 
 ## Unreleased
 
+- Skills: SKILL.md front matter is valid YAML (descriptions with a colon are quoted), so GitHub and other YAML readers
+  show it; chat-saved skills are written the same way.
+- NOTICE names the copyright holder.
+
 ## 0.1.0
 
 The first public release.

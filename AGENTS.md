@@ -124,6 +124,8 @@ needs `web`). Core alone is the Lead.
   behaviour, so ask "would an agent act differently knowing this?" before committing.
 - An owner setting (a URL, path, time zone, hour, name): a field of `Config` in src/config.ts with its default, set in
   pocketcrew.config.ts and read through `CONFIG` (shell scripts: `setting <key>` from scripts/lib.sh). Never hard-code one.
+- The changelog: a change someone running pocketcrew would notice adds a line under `## Unreleased` in `CHANGELOG.md`,
+  in the same commit.
 - A test: core tests run in any build, so one that uses a plugin's agents or tools says so with
   `{ skip: needs("google") }` (src/test-needs.ts); a plugin's own tests live in its folder and run only when it is on.
 - A kit: a function returning a pi extension, registered in `KITS` (toolkits.ts).
