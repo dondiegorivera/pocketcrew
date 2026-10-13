@@ -130,4 +130,4 @@ private reporting, see [SECURITY.md](SECURITY.md).
 
 ## 📄 License
 
-[Apache-2.0](LICENSE)
+© 2026 Roland Polczer. Licensed under [Apache-2.0](LICENSE); see [NOTICE](NOTICE).
