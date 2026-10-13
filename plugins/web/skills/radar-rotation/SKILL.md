@@ -1,6 +1,6 @@
 ---
 name: radar-rotation
-description: Radar's week: one area of the project profiles per weekday, each run published as its own HTML page, and a Sunday review of the week. Read it at every scheduled radar run and do today's area only.
+description: "Radar's week: one area of the project profiles per weekday, each run published as its own HTML page, and a Sunday review of the week. Read it at every scheduled radar run and do today's area only."
 agents: radar
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: prep-tax-advisor
-description: Recipe for the tax advisor's pack: learn from the operator's earlier cover letters in Drive what they usually send, gather this period's documents from Gmail, and prepare the Sheet, the summary Doc and the cover email as a draft.
+description: "Recipe for the tax advisor's pack: learn from the operator's earlier cover letters in Drive what they usually send, gather this period's documents from Gmail, and prepare the Sheet, the summary Doc and the cover email as a draft."
 agents: clerk
 ---
 

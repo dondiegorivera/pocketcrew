@@ -1,6 +1,6 @@
 ---
 name: html-report
-description: Format for published HTML pages (publish_page): visual, phone-first cards with highlights, tags, diagrams and a CSS-only light/dark toggle; no footnotes.
+description: "Format for published HTML pages (publish_page): visual, phone-first cards with highlights, tags, diagrams and a CSS-only light/dark toggle; no footnotes."
 updated: 1791694182969
 origin: research
 ---

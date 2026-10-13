@@ -1,6 +1,6 @@
 ---
 name: crew
-description: How this fleet works: agents and tools, jobs, routines and wishes, where reports, pages and skills live, the budget, safety rules, commands, and asking for a change. Read it for questions about the fleet or a capability you lack.
+description: "How this fleet works: agents and tools, jobs, routines and wishes, where reports, pages and skills live, the budget, safety rules, commands, and asking for a change. Read it for questions about the fleet or a capability you lack."
 editable: dev
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: offer-pricing
-description: Price suggestions for an offer in two stages: the Prospector gathers public evidence, then the Closer on Opus, without web, suggests a realistic, an optimistic and a floor price.
+description: "Price suggestions for an offer in two stages: the Prospector gathers public evidence, then the Closer on Opus, without web, suggests a realistic, an optimistic and a floor price."
 agents: prospector, closer
 ---
 

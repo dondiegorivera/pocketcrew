@@ -30,7 +30,7 @@ const NAME = /^[a-z0-9][a-z0-9-]{0,47}$/;
 export function parseSkill(markdown: string): Omit<Skill, "files" | "source"> | string {
 	const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(markdown.trimStart());
 	if (!m) return "A skill starts with front matter between --- lines: name and description.";
-	const field = (k: string) => new RegExp(`^${k}:\\s*(.*)$`, "m").exec(m[1]!)?.[1]?.trim().replace(/^["']|["']$/g, "") ?? "";
+	const field = (k: string) => yamlScalar(new RegExp(`^${k}:\\s*(.*)$`, "m").exec(m[1]!)?.[1] ?? "");
 	const updated = Number(field("updated"));
 	return skillProblem({
 		name: field("name"),
@@ -69,9 +69,32 @@ export const superseded = (bundled: readonly Skill[], chat: readonly Skill[]) =>
 
 export const visibleTo = (s: Pick<Skill, "agents">, agent: string) => s.agents.length === 0 || s.agents.includes(agent);
 
+/**
+ * A front matter value as YAML reads it: plain, or in double quotes when YAML would take it for something else (a ": "
+ * or " #" inside, a leading indicator such as - ? : [ { ' " # & * ! | > % @ `), so GitHub and other YAML readers show
+ * the file. Double-quoted YAML with only these escapes is JSON's string syntax.
+ */
+export function yamlValue(v: string): string {
+	return /: | #|^[-?:,[\]{}#&*!|>'"%@`]|^\s|\s$|^$/.test(v) ? JSON.stringify(v) : v;
+}
+
+/** A front matter value read back: double-quoted (JSON escapes), single-quoted ('' for '), or plain. */
+export function yamlScalar(raw: string): string {
+	const v = raw.trim();
+	if (v.length >= 2 && v.startsWith('"') && v.endsWith('"')) {
+		try {
+			return String(JSON.parse(v));
+		} catch {
+			return v.slice(1, -1);
+		}
+	}
+	if (v.length >= 2 && v.startsWith("'") && v.endsWith("'")) return v.slice(1, -1).replace(/''/g, "'");
+	return v;
+}
+
 /** A skill as the SKILL.md the sync commits: what parseSkill reads back, `updated` included. */
 export function skillMarkdown(s: Omit<Skill, "files" | "source">): string {
-	const line = (v: string) => v.replace(/\s+/g, " ").trim();
+	const line = (v: string) => yamlValue(v.replace(/\s+/g, " ").trim());
 	return [
 		"---",
 		`name: ${s.name}`,

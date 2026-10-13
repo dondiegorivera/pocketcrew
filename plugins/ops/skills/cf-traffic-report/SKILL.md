@@ -1,6 +1,6 @@
 ---
 name: cf-traffic-report
-description: Daily Cloudflare traffic report: all sites, human visits, spikes, top 20 performers with graphs, as a phone-first HTML page.
+description: "Daily Cloudflare traffic report: all sites, human visits, spikes, top 20 performers with graphs, as a phone-first HTML page."
 updated: 1791701218222
 ---
 

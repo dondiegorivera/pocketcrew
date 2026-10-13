@@ -1,6 +1,6 @@
 ---
 name: prospecting
-description: How the Prospector finds and adds prospects for an offer: where to look, what makes a fit, what to record and what never to collect.
+description: "How the Prospector finds and adds prospects for an offer: where to look, what makes a fit, what to record and what never to collect."
 agents: prospector
 ---
 
